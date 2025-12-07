@@ -1,6 +1,6 @@
 # NDS .sav Conversion and Transfer Tool
 ## Project Goal
-Appease my laziness by creating a tool that leverages user level daemon (using systemctl services) + C program to create automatic transfer and conversion of .sav file from modded 3DS to PC. I explored the opensource project 'MelonDS' to understand how they convert to .sav file from other save file types.
+Appease my laziness by creating a tool that leverages user level daemon (using systemctl services) + C program to create automatic transfer and conversion of .sav file from modded 3DS to PC. I explored the opensource project 'MelonDS' to understand how they convert to .sav file from other save file types. If you are using the melonds emulator, you don't need to actually convert if you are transferring .sav nds to .sav melonds as the emulator handles this (still an option if desired).
 ## Build
 Before compilation, in main.c, replace the value of macro 'CONFIG_PATH' with the absolute path to your dir_config.txt.
 
