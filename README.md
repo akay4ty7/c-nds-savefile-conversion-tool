@@ -1,7 +1,20 @@
 # NDS .sav Conversion and Transfer Tool
-![project8](https://github.com/user-attachments/assets/670ed191-0be6-4ad1-9d9b-be42f920b417)
 ## Project Goal
-This project was born out of a curiosity of the open source project called 'MelonDs and also from my laziness to avoid manual dragging and dropping files. I created a tool that leverages user level daemon (systemctl services) + C programming to create an automatic transfer and conversion of .sav file from modded 3DS to PC. I explored the opensource project 'MelonDS' to understand how they convert to .sav file from other save file types. This meant I had to trawl through a large code base with 0 clue where things were. Despite this, I was able to trace the from the interface all the way back to the conversion code. Based on what I've gathered, the conversion basically traces through a large lookup table based on the NDS's game code and finds 1 of 11 size types (e.g. size type 1 is 512bytes). The size type indicates how many bytes to read and write from the beginning of the original .sav into a the new .sav file. If you are using the melonds emulator, you don't need to actually convert if you are transferring .sav nds to .sav melonds as the emulator handles this (still an option if desired).
+Nintendo DS save files come in various formats depending on the hardware or emulator producing them. **MelonDS**, an open-source NDS emulator, handles conversion between these formats internally. I wanted to understand how that conversion actually works—and also automate my own workflow of transferring saves from a modded 3DS to PC (I was tired of manual drag-and-drop). The tool combines a user-level systemd daemon with a C program to automatically detect, transfer, and convert save files. To understand the conversion logic, I traced through the MelonDS codebase from the UI layer down to the actual conversion routines. The mechanism is straightforward once located: the emulator uses the NDS game code to index into a lookup table, returning one of 11 predefined size types (e.g., type 1 = 512 bytes). The size type determines how many bytes to read from the source save and write into the target format.
+
+Worth noting: if you're transferring native NDS saves into MelonDS, the emulator handles conversion on load meaning explicit conversion is optional but available.
+
+**Interesting Knowledge Gained:**
+- Codebase navigation: Tracing functionality through an unfamiliar open-source project with no prior context.
+- Save format structure: Understanding that NDS save conversion is essentially a size-mapping problem, not a data transformation.
+- Systemd user services: Setting up a daemon to monitor and react to file events automatically.
+- Lookup table design: Seeing how a simple table-driven approach handles variation across hundreds of game titles.
+## Future Improvements
+- Add batch conversion/transfers.
+- Handle 3DS .sav file conversion/transfers.
+- (not included in codebase) Optimise systemctl service script
+## Demo
+![project8](https://github.com/user-attachments/assets/670ed191-0be6-4ad1-9d9b-be42f920b417)
 ## Build
 Before compilation, in main.c, replace the value of macro 'CONFIG_PATH' with the absolute path to your dir_config.txt.
 
@@ -19,7 +32,4 @@ gcc -o main main.c
 ```
 ./main
 ```
-## Future Improvements
-- Add batch conversion/transfers.
-- Handle 3DS .sav file conversion/transfers.
-- (not included in codebase) Optimise systemctl service script
+
